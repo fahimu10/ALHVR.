@@ -1,1 +1,23 @@
+# Pycharm
 .idea
+
+# ACDC raw dataset
+data/acdc/raw/
+
+# Generated h5 files
+data/acdc/slices/
+data/acdc/*.h5
+
+# Logs and checkpoints
+model/
+runs/
+log/
+*.pth
+*.pt
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
