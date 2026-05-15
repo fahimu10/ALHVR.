@@ -27,7 +27,7 @@ def Inference(FLAGS):
         shutil.rmtree(test_save_path)
     os.makedirs(test_save_path)
     net = net_factory(net_type="vnet_fea_aux", in_chns=1, class_num=2)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     net = nn.DataParallel(net).to(device)
 
     save_mode_path = os.path.join(

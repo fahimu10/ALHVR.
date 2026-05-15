@@ -140,7 +140,7 @@ def train(args, snapshot_path):
 
     model1 = net_factory(net_type="vnet_fea_aux", in_chns=1, class_num=num_classes, mode="train")
     model2 = net_factory(net_type="vnet_fea_aux", in_chns=1, class_num=num_classes, mode="train")
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     model1 = nn.DataParallel(model1).to(device)
     model2 = nn.DataParallel(model2).to(device)
     db_train = BraTS2019(base_dir=train_data_path,
