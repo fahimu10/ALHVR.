@@ -58,12 +58,12 @@ for case in image_paths:
         f.create_dataset("label", data=mask, compression="gzip")
 
     # Save 2D training slices
-    for slice_ind in range(image.shape[0]):
+    for slice_ind in range(image.shape[2]):
         slice_path = SLICE_DIR / f"{item}_slice_{slice_ind}.h5"
 
         with h5py.File(slice_path, "w") as f:
-            f.create_dataset("image", data=image[slice_ind], compression="gzip")
-            f.create_dataset("label", data=mask[slice_ind], compression="gzip")
+            f.create_dataset("image", data=image[:, :, slice_ind], compression="gzip")
+            f.create_dataset("label", data=mask[:, :, slice_ind], compression="gzip")
 
         slice_num += 1
 
@@ -71,44 +71,3 @@ for case in image_paths:
 
 print("Converted all ACDC volumes to 2D slices")
 print("Total slices:", slice_num)
-
-# =========================
-# Regenerate data_list files
-# =========================
-
-data_list_dir = OUT_DIR / "data_list"
-data_list_dir.mkdir(parents=True, exist_ok=True)
-
-all_slices = sorted([p.stem for p in SLICE_DIR.glob("*.h5")])
-all_volumes = sorted([p.stem for p in OUT_DIR.glob("patient*.h5")])
-
-print("Generated slice files:", len(all_slices))
-print("Generated volume files:", len(all_volumes))
-
-# For local smoke test
-train_slices = all_slices[:1312]
-val_volumes = all_volumes[:20]
-
-with open(data_list_dir / "train_slices.list", "w") as f:
-    for item in train_slices:
-        f.write(item + "\n")
-
-with open(data_list_dir / "all_slices.list", "w") as f:
-    for item in all_slices:
-        f.write(item + "\n")
-
-with open(data_list_dir / "train.list", "w") as f:
-    for item in all_volumes:
-        f.write(item + "\n")
-
-with open(data_list_dir / "val.list", "w") as f:
-    for item in val_volumes:
-        f.write(item + "\n")
-
-with open(data_list_dir / "test.list", "w") as f:
-    for item in val_volumes:
-        f.write(item + "\n")
-
-print("Regenerated data_list files")
-print("train_slices:", len(train_slices))
-print("val:", len(val_volumes))
