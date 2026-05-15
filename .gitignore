@@ -2,11 +2,11 @@
 .idea
 
 # ACDC raw dataset
-data/acdc/raw/
+train_ALHVR/data/acdc/raw/
 
 # Generated h5 files
-data/acdc/slices/
-data/acdc/*.h5
+train_ALHVR/data/acdc/slices/
+train_ALHVR/data/acdc/*.h5
 
 # Logs and checkpoints
 model/

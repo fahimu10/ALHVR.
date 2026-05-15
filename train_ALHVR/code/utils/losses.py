@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+
 def Binary_dice_loss(predictive, target, ep=1e-8):
     intersection = 2 * torch.sum(predictive * target) + ep
     union = torch.sum(predictive) + torch.sum(target) + ep
@@ -92,7 +94,7 @@ def dice_loss_all(score, target):
 
 
 def kl_divergence(alpha, num_classes, batch):
-    ones = torch.ones([batch, num_classes, alpha.shape[-1], alpha.shape[-1]], dtype=torch.float32).cuda()
+    ones = torch.ones([batch, num_classes, alpha.shape[-1], alpha.shape[-1]], dtype=torch.float32, device=alpha.device)
     sum_alpha = torch.sum(alpha, dim=1, keepdim=True)
     first_term = (
         torch.lgamma(sum_alpha)

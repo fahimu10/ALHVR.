@@ -23,7 +23,8 @@ def test_single_volume(image, label, model, classes, patch_size=[256, 256]):
         slice = image[ind, :, :]
         x, y = slice.shape[0], slice.shape[1]
         slice = zoom(slice, (patch_size[0] / x, patch_size[1] / y), order=0)
-        input = torch.from_numpy(slice).unsqueeze(0).unsqueeze(0).float().cuda()
+        device = next(net.parameters()).device
+        input = torch.from_numpy(slice).unsqueeze(0).unsqueeze(0).float().to(device)
         model.eval()
         with torch.no_grad():
             output = model(input)
@@ -46,7 +47,8 @@ def test_single_volume_dd(image, label, model, classes, patch_size=[256, 256]):
         slice = image[ind, :, :]
         x, y = slice.shape[0], slice.shape[1]
         slice = zoom(slice, (patch_size[0] / x, patch_size[1] / y), order=0)
-        input = torch.from_numpy(slice).unsqueeze(0).unsqueeze(0).float().cuda()
+        device = next(net.parameters()).device
+        input = torch.from_numpy(slice).unsqueeze(0).unsqueeze(0).float().to(device)
         model.eval()
         with torch.no_grad():
             output,_ ,_,_,_,_ = model(input)

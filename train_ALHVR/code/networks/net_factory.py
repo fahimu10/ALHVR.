@@ -8,7 +8,7 @@ def net_factory(net_type="unet", in_chns=1, class_num=4, mode = "train"):
     else:
         emb_num = 0
     if net_type == "unet_fea_aux":
-        net = UNet_fea_aux(in_chns=in_chns, class_num=class_num).cuda()
+        net = UNet_fea_aux(in_chns=in_chns, class_num=class_num)
     elif net_type == "vnet_fea_aux" and mode == "train":
-        net = VNet_fea_aux(n_channels=in_chns, n_classes=class_num, normalization='batchnorm', has_dropout=True).cuda()
+        net = VNet_fea_aux(n_channels=in_chns, n_classes=class_num, normalization='batchnorm', has_dropout=True)
     return net
